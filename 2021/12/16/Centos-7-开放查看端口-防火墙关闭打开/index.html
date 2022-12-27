@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>Centos 7 开放查看端口 防火墙关闭打开 [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">Centos 7 开放查看端口 防火墙关闭打开</h1>
+<article class="post markdown-style">
+  <h1 id="Centos-7-firewall-命令："><a href="#Centos-7-firewall-命令：" class="headerlink" title="Centos 7 firewall 命令："></a>Centos 7 firewall 命令：</h1><h2 id="开启防火墙："><a href="#开启防火墙：" class="headerlink" title="开启防火墙："></a>开启防火墙：</h2><p><code>systemctl start firewalld.service </code></p>
+<h2 id="查看防火墙状态："><a href="#查看防火墙状态：" class="headerlink" title="查看防火墙状态："></a>查看防火墙状态：</h2><p>查看默认防火墙状态（关闭后显示notrunning，开启后显示running）</p>
+<p><code>firewall-cmd --state </code></p>
+<h2 id="查看已经开放的端口："><a href="#查看已经开放的端口：" class="headerlink" title="查看已经开放的端口："></a>查看已经开放的端口：</h2><p><strong>查看防火墙所有信息</strong></p>
+<p><code>firewall-cmd --list-all</code></p>
+<p><strong>查看防火墙开放的端口信息</strong></p>
+<p><code>firewall-cmd --list-ports</code></p>
+<h2 id="开启端口"><a href="#开启端口" class="headerlink" title="开启端口"></a>开启端口</h2><p><code>firewall-cmd --zone=public --add-port=80/tcp --permanent</code></p>
+<p>命令含义：</p>
+<p>–zone #作用域</p>
+<p>–add-port=80/tcp #添加端口，格式为：端口/通讯协议</p>
+<p>–permanent #永久生效，没有此参数重启后失效</p>
+<h2 id="删除端口"><a href="#删除端口" class="headerlink" title="删除端口"></a>删除端口</h2><p><code>firewall-cmd --zone=public --remove-port=80/tcp --permanent</code></p>
+<h2 id="重启防火墙"><a href="#重启防火墙" class="headerlink" title="重启防火墙"></a>重启防火墙</h2><p>firewall-cmd –reload <code>#重启firewall</code><br>systemctl stop firewalld.service <code>#停止firewall</code><br>systemctl disable firewalld.service <code>#禁止firewall开机启动</code></p>
+<h1 id="CentOS-7-以下版本-iptables-命令"><a href="#CentOS-7-以下版本-iptables-命令" class="headerlink" title="CentOS 7 以下版本 iptables 命令"></a>CentOS 7 以下版本 iptables 命令</h1><p>如要开放80，22，8080 端口，输入以下命令即可</p>
+<p>/sbin/iptables -I INPUT -p tcp –dport 80 -j ACCEPT<br>/sbin/iptables -I INPUT -p tcp –dport 22 -j ACCEPT<br>/sbin/iptables -I INPUT -p tcp –dport 8080 -j ACCEPT</p>
+<p>然后保存：</p>
+<p><code>/etc/rc.d/init.d/iptables save</code></p>
+<p>查看打开的端口：</p>
+<p><code>/etc/init.d/iptables status</code></p>
+<h1 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h1><p>1） 永久性生效，重启后不会复原</p>
+<p>开启： <code>chkconfig iptables on</code></p>
+<p>关闭： <code>chkconfig iptables off</code></p>
+<p>2） 即时生效，重启后复原</p>
+<p>开启： <code>service iptables start</code></p>
+<p>关闭： <code>service iptables stop</code></p>
+<ul>
+<li><strong>注意:新增/删除操作需要重启防火墙服务</strong></li>
+</ul>
+<hr>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yucongblog/p/6705733.html">Centos 7 开放查看端口 防火墙关闭打开</a></p>
+</blockquote>
+
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2021/12/18/Html5%E4%B8%AD%E7%9A%84LocalStorage/">prev</a>
+    
+
+    
+    <p>last update time 2022-03-03</p>
+    
+    
+        <a class="extend next post-next" href="/2021/12/15/centos7%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E5%92%8C%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

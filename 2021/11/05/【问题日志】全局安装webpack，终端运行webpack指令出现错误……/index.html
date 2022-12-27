@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>【问题日志】全局安装webpack，终端运行webpack指令出现错误 [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">【问题日志】全局安装webpack，终端运行webpack指令出现错误</h1>
+<article class="post markdown-style">
+  <h3 id="webpack指令"><a href="#webpack指令" class="headerlink" title="webpack指令"></a>webpack指令</h3><pre style="background-color: #F5F5F5;color: black">
+$ <b style="color: #f30213">webpack</b>
+/Users/Super/node_modules/webpack-cli/bin/cli.js:244
+                throw err;
+                ^
+<b style="color: #f30213">Error: Cannot find module 'webpack'</b>
+    at Function.Module._resolveFilename (module.js:555:15)
+    at Function.Module._load (module.js:482:25)
+    at Module.require (module.js:604:17)
+    at require (/Users/Super/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)
+    at Object.<anonymous> (/Users/Super/node_modules/webpack-cli/bin/convert-argv.js:7:24)
+    at Module._compile (/Users/Super/node_modules/v8-compile-cache/v8-compile-cache.js:178:30)
+    at Object.Module._extensions..js (module.js:671:10)
+    at Module.load (module.js:573:32)
+    at tryModuleLoad (module.js:513:12)
+    at Function.Module._load (module.js:505:3)
+    at Module.require (module.js:604:17)
+    at require (internal/module.js:11:18)
+    at yargs.parse (/Users/Super/node_modules/webpack-cli/bin/cli.js:241:14)
+    at Object.parse (/Users/Super/node_modules/yargs/yargs.js:563:18)
+    at /Users/Super/node_modules/webpack-cli/bin/cli.js:219:8
+    at Object.<anonymous> (/Users/Super/node_modules/webpack-cli/bin/cli.js:538:3)
+    at Module._compile (module.js:660:30)
+    at Object.Module._extensions..js (module.js:671:10)
+    at Module.load (module.js:573:32)
+    at tryModuleLoad (module.js:513:12)
+    at Function.Module._load (module.js:505:3)
+    at Module.require (module.js:604:17)
+    at require (internal/module.js:11:18)
+    at module.exports.filename (/usr/local/lib/node_modules/webpack-cli/node_modules/import-local/index.js:16:66)
+    at /usr/local/lib/node_modules/webpack-cli/bin/cli.js:13:6
+    at Object.<anonymous> (/usr/local/lib/node_modules/webpack-cli/bin/cli.js:538:3)
+    at Module._compile (module.js:660:30)
+    at Object.Module._extensions..js (module.js:671:10)
+    at Module.load (module.js:573:32)
+    at tryModuleLoad (module.js:513:12)
+</pre>
+
+<p><strong>解决方法</strong></p>
+<p><code>npm link webpack</code></p>
+<hr>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>在我运行这条指令之后，终端出现如下</p>
+<p><code>/Users/Super/node_modules/webpack -&gt; /usr/local/lib/node_modules/webpack</code></p>
+<p>猜想由于全局安装。本地运行的webpack，指向全局安装路径所在webpack目录。这时我的 <b>/Users/Super/node_modules/</b>下多了个<code>webpack</code>文件夹替身</p>
+<hr>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/29492240/error-cannot-find-module-webpack">Error: Cannot find module ‘webpack’
+</a></p>
+
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2021/11/29/Spring%E6%B3%A8%E8%A7%A3-Resource%E5%92%8C-Autowired%E5%8C%BA%E5%88%AB%E5%AF%B9%E6%AF%94/">prev</a>
+    
+
+    
+    <p>last update time 2022-02-26</p>
+    
+    
+        <a class="extend next post-next" href="/2021/11/05/%E3%80%90%E9%97%AE%E9%A2%98%E6%97%A5%E5%BF%97%E3%80%91%E6%9C%AC%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96git%E4%BB%93%E5%BA%93%EF%BC%8C%E8%AE%BE%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%A6%E2%80%A6/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

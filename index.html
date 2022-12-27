@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>Immer Try [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        
+
+
+
+  <div class="article">
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2022/01/17/【题】MySQL数据库的一个例题（下）/">
+            【题】MySQL数据库的一个例题（下）
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>
+查询每门课程被选修的学生数123456SELECT t2.cname,       COUNT(t1.sid) AS sum_stuFROM sc t1INNER JOIN course t2  ON t1.cid = t2.cidGROUP BY t2.cname
+查询出只选修了一门课程的全部学...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2022-01-17
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2022/01/13/【题】MySQL数据库的一个例题（上）/">
+            【题】MySQL数据库的一个例题（上）
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>创建数据库及其对应的表表架构学生表：（sid,sname,sage,ssex）课程表：（cid,cname,tid）分数表：（sid,cid,score）教师表：（tid,tname）
+学生表：
+123456CREATE TABLE Student(    sid int,    sname var...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2022-01-13
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/12/25/MySQl存储过程、触发器、视图、自定义函数总结/">
+            MySQl存储过程、触发器、视图、自定义函数、索引总结
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>MySQL存储过程与函数的区别创建一个无参的存储过程12345678delimiter//CREATE PROCEDURE showTime() //创建一个无参的存储过程BEGIN    SELECT NOW();END//delimiter;CALL showTime();
+创建一个只有IN参数...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-12-25
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/12/18/Html5中的LocalStorage/">
+            Html5中的LocalStorage
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>JS对象读取形式：
+1localStorage.name
+添加/修改
+1localStorage.name = &amp;quot;SugarMan&amp;quot;
+其中”SugarMan”只能是字符串形式（目前为止只支持字符串）。所以存储时是JSON对象时需要执行下JSON.stringify，所以获取时需要...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-12-18
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/12/16/Centos-7-开放查看端口-防火墙关闭打开/">
+            Centos 7 开放查看端口 防火墙关闭打开
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>Centos 7 firewall 命令：开启防火墙：systemctl start firewalld.service 
+查看防火墙状态：查看默认防火墙状态（关闭后显示notrunning，开启后显示running）
+firewall-cmd --state 
+查看已经开放的端口：查看防火墙所有信...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-12-16
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/12/15/centos7时间同步和时区设置/">
+            centos7时间同步和时区设置
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>安装ntp服务的软件包yum install ntp
+将ntp服务设置为缺省启动systemctl enable ntpd
+修改启动参数增加-g -x参数，允许ntp服务在系统时间误差较大时也能正常工作
+vi /etc/sysconfig/ntpd
+启动ntp服务service ntpd resta...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-12-15
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/12/10/var、let、const三者的区别/">
+            var、let、const三者的区别
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>1. 块级作用域 {} ES5 中作用域有：全局作用域、函数作用域。没有块作用域的概念。
+ES6 中新增了块级作用域。块作用域由 { } 包括，if语句和 for语句里面的{ }也属于块作用域。
+123456789101112131415161718192021222324252627&amp;lt;scr...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-12-10
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/12/01/Docker下安装MySQL数据库时区为UTC的解决方法/">
+            Docker下安装MySQL数据库时区为UTC的解决方法
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>一、安装mysql数据库
+docker search mysql
+docker pull mysql/mysql:tag
+
+二、运行mysql数据库docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -e TZ=&amp;qu...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-12-01
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/11/29/Spring注解-Resource和-Autowired区别对比/">
+            Spring注解@Resource和@Autowired区别对比
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>@Resource和@Autowired都是做bean的注入时使用，其实@Resource并不是Spring的注解，它的包是javax.annotation.Resource，需要导入，但是Spring支持该注解的注入。
+1、共同点两者都可以写在字段和setter方法上。两者如果都写在字段上，那么就...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-11-29
+            </span>
+          
+        </div>
+      </div>
+    
+      <div class="article-item">
+        <h2 class="article-item-header">
+          <a href="/2021/11/05/【问题日志】全局安装webpack，终端运行webpack指令出现错误……/">
+            【问题日志】全局安装webpack，终端运行webpack指令出现错误
+          </a>
+        </h2>
+        <div class="article-item-content">
+          
+            <p>webpack指令
+$ webpack
+/Users/Super/node_modules/webpack-cli/bin/cli.js:244
+                throw err;
+                ^
+Error: Cannot find module &#39;webpa...</p>
+          
+        </div>
+        <div class="atricle-item-time">
+          
+            <span>
+              2021-11-05
+            </span>
+          
+        </div>
+      </div>
+    
+  </div>
+
+
+
+    <div class="pagenator">
+    
+        <a class="extend prev-none">prev</a>
+    
+    
+
+    
+        
+            <span class="extend page-item page-item-select">1</span>
+        
+        
+    
+        
+        
+            <a class="extend page-item page-item-normal" href="page/2">2</a>
+        
+    
+        
+        
+            <a class="extend page-item page-item-normal" href="page/3">3</a>
+        
+    
+    
+    
+    
+        <a class="extend next" href="page/2">next</a>
+    
+</div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

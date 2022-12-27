@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>JAVA8新的日期库及使用示例 [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">JAVA8新的日期库及使用示例</h1>
+<article class="post markdown-style">
+  <h3 id="java-time下的关键类"><a href="#java-time下的关键类" class="headerlink" title="java.time下的关键类"></a>java.time下的关键类</h3><p>java.time包中的是类是不可变且线程安全的。新的时间及日期API位于java.time中，下面是一些关键类</p>
+<ul>
+<li><p>Instant——它代表的是时间戳</p>
+</li>
+<li><p>LocalDate——不包含具体时间的日期，比如2014-01-14。它可以用来存储生日，周年纪念日，入职日期等。</p>
+</li>
+<li><p>LocalTime——它代表的是不含日期的时间</p>
+</li>
+<li><p>LocalDateTime——它包含了日期及时间，不过还是没有偏移信息或者说时区。</p>
+</li>
+<li><p>ZonedDateTime——这是一个包含时区的完整的日期时间，偏移量是以UTC/格林威治时间为基准的。</p>
+</li>
+</ul>
+<hr>
+<h3 id="java8是如何处理时间及日期的"><a href="#java8是如何处理时间及日期的" class="headerlink" title="java8是如何处理时间及日期的"></a>java8是如何处理时间及日期的</h3><ol>
+<li>如何获取当天的日期<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();  </span><br><span class="line">System.out.println(<span class="string">&quot;今天的日期是：&quot;</span> + today);</span><br><span class="line"><span class="comment">// 今天的日期是：2018-09-26</span></span><br></pre></td></tr></table></figure></li>
+<li>如何获取当前的年月日<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line"><span class="type">int</span> <span class="variable">year</span> <span class="operator">=</span> today.getYear();</span><br><span class="line"><span class="type">int</span> <span class="variable">month</span> <span class="operator">=</span> today.getMonthValue();</span><br><span class="line"><span class="type">int</span> <span class="variable">day</span> <span class="operator">=</span> today.getDayOfMonth();</span><br><span class="line">System.out.println(year + <span class="string">&quot;年：&quot;</span> + month + <span class="string">&quot;月：&quot;</span> + day + <span class="string">&quot;日：&quot;</span>);</span><br><span class="line"><span class="comment">// 2018年9月26日</span></span><br></pre></td></tr></table></figure></li>
+<li>如何获取某个特定的日期<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">dateOfBirth</span> <span class="operator">=</span> LocalDate.of(<span class="number">2018</span>,<span class="number">10</span>,<span class="number">1</span>);</span><br><span class="line">System.out.println(<span class="string">&quot;您输入的日期是：&quot;</span> + dateOfBirth);</span><br><span class="line"><span class="comment">// 您输入的日期是：2018-10-01</span></span><br></pre></td></tr></table></figure></li>
+<li>检查两个日期是否相等<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.of(<span class="number">2018</span>,<span class="number">9</span>,<span class="number">26</span>);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">day</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line">System.out.println(<span class="string">&quot;今天是2018-09-26吗？&quot;</span> + day.equals(date));</span><br><span class="line"><span class="comment">// 今天是2018-09-26吗？true</span></span><br></pre></td></tr></table></figure></li>
+<li>检查重复事件，比如生日<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">dateOfBirth</span> <span class="operator">=</span> LocalDate.of(<span class="number">1996</span>,<span class="number">6</span>,<span class="number">6</span>);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">day</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line"><span class="type">MonthDay</span> <span class="variable">birthday</span> <span class="operator">=</span> MonthDay.of(dateOfBirth.getMonthValue(), dateOfBirth.getDayOfMonth());</span><br><span class="line"><span class="type">MonthDay</span> <span class="variable">currMonthDay</span> <span class="operator">=</span> MonthDay.from(date);</span><br><span class="line"><span class="keyword">if</span> (currMonthDay.equals(birthday)) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;今天是您生日。&quot;</span>);</span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;对不起，今天不是您生日。&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">// 对不起，今天不是您生日。</span></span><br></pre></td></tr></table></figure></li>
+<li>如何增加时间里面的小时数<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalTime</span> <span class="variable">localTime</span> <span class="operator">=</span> LocalTime.now();</span><br><span class="line">System.out.println(<span class="string">&quot;现在时间是：&quot;</span> + localTime);</span><br><span class="line"><span class="type">LocalTime</span> <span class="variable">add</span> <span class="operator">=</span> localTime.plusHours(<span class="number">2</span>);</span><br><span class="line">System.out.println(<span class="string">&quot;增加俩小时后的时间是：&quot;</span> + add);</span><br><span class="line"><span class="comment">// 现在时间是：22:50:43.730</span></span><br><span class="line"><span class="comment">// 增加俩小时后的时间是：00:50:43.730</span></span><br></pre></td></tr></table></figure></li>
+<li>如何获取1周后的日期<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();  </span><br><span class="line">System.out.println(<span class="string">&quot;今天的日期是：&quot;</span> + today);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">oneWeek</span> <span class="operator">=</span> today.plus(<span class="number">1</span>, ChronoUnit.WEEKS);</span><br><span class="line">System.out.println(<span class="string">&quot;一周后的日期是：&quot;</span> + oneWeek);</span><br><span class="line"><span class="comment">// 今天的日期是：2018-09-26</span></span><br><span class="line"><span class="comment">// 一周后的日期是：2018-10-03</span></span><br></pre></td></tr></table></figure></li>
+<li>一年前后的日期<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();  </span><br><span class="line">System.out.println(<span class="string">&quot;今天的日期是：&quot;</span> + today);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">previousYear</span> <span class="operator">=</span> date.minus(<span class="number">1</span>,ChronoUnit.YEARS);</span><br><span class="line">System.out.println(<span class="string">&quot;一年前的日期是：&quot;</span> + previousYear);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">nextYear</span> <span class="operator">=</span> date.plus(<span class="number">1</span>,ChronoUnit.YEARS);</span><br><span class="line">System.out.println(<span class="string">&quot;一年后的日期是：&quot;</span> + nextYear);</span><br><span class="line"><span class="comment">// 今天的日期是：2018-09-26</span></span><br><span class="line"><span class="comment">// 一年前的日期是：2017-09-26</span></span><br><span class="line"><span class="comment">// 一年后的日期是：2019-09-26</span></span><br></pre></td></tr></table></figure></li>
+<li>使用时钟<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回当前时间根据系统时钟和UTC</span></span><br><span class="line"><span class="type">Clock</span> <span class="variable">clock</span> <span class="operator">=</span> Clock.systemUTC();</span><br><span class="line">System.out.println(<span class="string">&quot;Clock：&quot;</span> + clock);</span><br><span class="line"><span class="comment">// Clock：SystemClock[Z]</span></span><br></pre></td></tr></table></figure></li>
+<li>如何判断某个日期在另一个日期的前面还是后面<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line">System.out.println(<span class="string">&quot;今天的日期是：&quot;</span> + today);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">tommorrow</span> <span class="operator">=</span> today.plus(<span class="number">1</span>, ChronoUnit.DAYS);</span><br><span class="line">System.out.println(<span class="string">&quot;明天的日期是：&quot;</span> + tommorrow);</span><br><span class="line">System.out.println(<span class="string">&quot;日期：&quot;</span> + tommorrow + <span class="string">&quot;是否在日期：&quot;</span> + today + <span class="string">&quot;之前？&quot;</span> + tommorrow.isBefore(today));</span><br><span class="line">System.out.println(<span class="string">&quot;日期：&quot;</span> + tommorrow + <span class="string">&quot;是否在日期：&quot;</span> + today + <span class="string">&quot;之后？&quot;</span> + tommorrow.isAfter(today));</span><br><span class="line"><span class="comment">// 今天的日期是：2018-09-26</span></span><br><span class="line"><span class="comment">// 明天的日期是：2018-09-27</span></span><br><span class="line"><span class="comment">// 日期：2018-09-27是否在日期：2018-09-26之前？false</span></span><br><span class="line"><span class="comment">// 日期：2018-09-27是否在日期：2018-09-26之后？true</span></span><br></pre></td></tr></table></figure></li>
+<li>处理不同的时区<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDateTime</span> <span class="variable">localDateTime</span> <span class="operator">=</span> LocalDateTime.now();</span><br><span class="line"><span class="type">ZoneId</span> <span class="variable">zoneId</span> <span class="operator">=</span> ZoneId.of(ZoneId.SHORT_IDS.get(<span class="string">&quot;ACT&quot;</span>));</span><br><span class="line"><span class="type">ZonedDateTime</span> <span class="variable">zonedDateTime</span> <span class="operator">=</span> ZonedDateTime.of(localDateTime,zoneId);</span><br><span class="line">System.out.println(<span class="string">&quot;现在时区的时间和在特定时区时间：&quot;</span> + zonedDateTime);</span><br><span class="line"><span class="comment">// 现在时区的时间和在特定时区时间：2018-09-26T23:15:52.325+09:30[Australia/Darwin]</span></span><br></pre></td></tr></table></figure></li>
+<li>如何表示固定的日期，比如信用卡过期时间<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">YearMonth</span> <span class="variable">currentYearMoth</span> <span class="operator">=</span> YearMonth.now();</span><br><span class="line">System.out.printf(<span class="string">&quot;这个月的年月 %s 有 %d 天%n&quot;</span>, currentYearMoth,currentYearMoth.lengthOfMonth());</span><br><span class="line"><span class="type">YearMonth</span> <span class="variable">creditCardExpiry</span> <span class="operator">=</span> YearMonth.of(<span class="number">2018</span>,Month.OCTOBER);</span><br><span class="line">System.out.printf(<span class="string">&quot;您输入的年月日期是 %s %n&quot;</span>,creditCardExpiry);</span><br><span class="line"><span class="comment">// 这个月的年月 2018-09 有 30 天</span></span><br><span class="line"><span class="comment">// 您输入的年月日期是 2018-10 </span></span><br></pre></td></tr></table></figure></li>
+<li>如何在java8中检查闰年<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line">System.out.printf(<span class="string">&quot;%s 年是不是闰年：%s&quot;</span>, today, today.isLeapYear());</span><br><span class="line"><span class="comment">// 2018-09-26 年是不是闰年：false</span></span><br></pre></td></tr></table></figure></li>
+<li>两个日期之间包含多少天，多少月<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">dates</span> <span class="operator">=</span> LocalDate.of(<span class="number">2018</span>, Month.OCTOBER, <span class="number">15</span>);</span><br><span class="line"><span class="type">Period</span> <span class="variable">period</span> <span class="operator">=</span> Period.between(today, dates);</span><br><span class="line">System.out.printf(<span class="string">&quot;日期 %s 和日期 %s相差 %s天&quot;</span>, today, dates, period.getDays());</span><br><span class="line"><span class="comment">// 日期 2018-09-26 和日期 2018-10-15相差 19天</span></span><br></pre></td></tr></table></figure></li>
+<li>带时区的日期与时间<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDateTime</span> <span class="variable">dateTime</span> <span class="operator">=</span> LocalDateTime.of(<span class="number">2018</span>,Month.SEPTEMBER,<span class="number">26</span>,<span class="number">23</span>,<span class="number">51</span>);</span><br><span class="line"><span class="type">ZoneOffset</span> <span class="variable">offset</span> <span class="operator">=</span> ZoneOffset.of(<span class="string">&quot;+05:30&quot;</span>);</span><br><span class="line"><span class="type">OffsetDateTime</span> <span class="variable">offsetDateTime</span> <span class="operator">=</span> OffsetDateTime.of(dateTime,offset);</span><br><span class="line">System.out.println(<span class="string">&quot;日期和时间在时区上的偏移时间：&quot;</span> + offsetDateTime);</span><br><span class="line"><span class="comment">// 日期和时间在时区上的偏移时间：2018-09-26T23:51+05:30</span></span><br></pre></td></tr></table></figure></li>
+<li>获取当前时间戳<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Instant</span> <span class="variable">timeStamp</span> <span class="operator">=</span> Instant.now();</span><br><span class="line">System.out.println(<span class="string">&quot;当前的时间戳是：&quot;</span> + timeStamp);</span><br><span class="line"><span class="comment">// 当前的时间戳是：2018-09-26T16:01:12.053Z</span></span><br></pre></td></tr></table></figure></li>
+<li>使用预定义的格式器来对日期进行解析/格式化<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">dayAfterTomorrow</span> <span class="operator">=</span> <span class="string">&quot;20180927&quot;</span>;</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">formatted</span> <span class="operator">=</span> LocalDate.parse(dayAfterTomorrow, DateTimeFormatter.BASIC_ISO_DATE);</span><br><span class="line">System.out.printf(<span class="string">&quot;字符 %s 格式化后的日期格式是 %s %n&quot;</span>, dayAfterTomorrow, formatted);</span><br><span class="line"><span class="comment">// 字符 20180927 格式化后的日期格式是 2018-09-27 </span></span><br></pre></td></tr></table></figure></li>
+<li>使用自定义的格式器来解析日期<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">day</span> <span class="operator">=</span> <span class="string">&quot;09 27 2018&quot;</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;MM dd yyyy&quot;</span>);</span><br><span class="line">   <span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.parse(day, formatter);</span><br><span class="line">   System.out.printf(<span class="string">&quot;字符 %s 转换成功后的日期是 %s %n&quot;</span>, day, date);</span><br><span class="line">   <span class="comment">// 字符 09 27 2018 转换成功后的日期是 2018-09-27</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (DateTimeException ex) &#123;</span><br><span class="line">   System.out.printf(<span class="string">&quot;%s 不能被转换; %n&quot;</span>, day);</span><br><span class="line">   ex.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>对日期进行格式化，转换成字符串<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDateTime</span> <span class="variable">arrivalDate</span> <span class="operator">=</span> LocalDateTime.now();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;MM dd yyyy HH:mm s&quot;</span>);</span><br><span class="line">   <span class="type">String</span> <span class="variable">landing</span> <span class="operator">=</span> arrivalDate.format(formatter);</span><br><span class="line">   System.out.printf(<span class="string">&quot;时间日期 %s 转换后的字符串为 %s %n&quot;</span>, arrivalDate, landing);</span><br><span class="line">   <span class="comment">// 时间日期 2018-09-27T00:19:22.974 转换后的字符串为 09 27 2018 00:19 22 </span></span><br><span class="line">&#125; <span class="keyword">catch</span> (DateTimeException ex) &#123;</span><br><span class="line">   System.out.printf(<span class="string">&quot;%s 格式转换错误 %n&quot;</span>,arrivalDate);</span><br><span class="line">   ex.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>如何取得某月的最后一天<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">firstDay</span> <span class="operator">=</span> LocalDate.of(date.getYear(),date.getMonth(),<span class="number">1</span>);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">lastDay</span> <span class="operator">=</span> date.with(TemporalAdjusters.lastDayOfMonth());</span><br><span class="line">System.out.println(<span class="string">&quot;本月第一天是：&quot;</span> + firstDay);</span><br><span class="line">System.out.println(<span class="string">&quot;本月最后一天是：&quot;</span> + lastDay);</span><br><span class="line"><span class="comment">// 本月第一天是：2018-09-01</span></span><br><span class="line"><span class="comment">// 本月最后一天是：2018-09-30</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Java-8-日期特性"><a href="#Java-8-日期特性" class="headerlink" title="Java 8 日期特性"></a>Java 8 日期特性</h3><h4 id="日期-时间API的几个关键点"><a href="#日期-时间API的几个关键点" class="headerlink" title="日期/时间API的几个关键点"></a>日期/时间API的几个关键点</h4><p>经过上面的例子，我们已经对java8的时间日期有了一定的了解，现在回顾一下</p>
+<ul>
+<li><p>它提供了javax.time.ZoneId用来处理时区。</p>
+</li>
+<li><p>它提供了LocalDate与LocalTime类</p>
+</li>
+<li><p>Java 8中新的时间与日期API中的所有类都是不可变且线程安全的，这与之前的Date与Calendar API中的恰好相反，那里面像java.util.Date以及SimpleDateFormat这些关键的类都不是线程安全的。</p>
+</li>
+<li><p>新的时间与日期API中很重要的一点是它定义清楚了基本的时间与日期的概念，比方说，瞬时时间，持续时间，日期，时间，时区以及时间段。它们都是基于ISO日历体系的。</p>
+</li>
+</ul>
+<h4 id="日期-时间特性"><a href="#日期-时间特性" class="headerlink" title="日期/时间特性"></a>日期/时间特性</h4><p>Java 8 日期/时间 API 是 JSR-310 的实现，它的实现目标是克服旧的日期时间实现中所有的缺陷，新的日期/时间API 的一些设计原则是：</p>
+<ul>
+<li><p><code>不变性</code>：新的日期/时间 API 中，所有的类都是不可变的，这对多线程环境有好处。</p>
+</li>
+<li><p><code>关注点分离</code>：新的 API 将人可读的日期时间和机器时间（unix timestamp）明确分离，它为日期（Date）、时间（Time）、日期时间（DateTime）、时间戳（unix timestamp）以及时区定义了不同的类。</p>
+</li>
+<li><p><code>清晰</code>：在所有的类中，方法都被明确定义用以完成相同的行为。举个例子，要拿到当前实例我们可以使用 now()方法，在所有的类中都定义了 format()和 parse()方法，而不是像以前那样专门有一个独立的类。为了更好的处理问题，所有的类都使用了工厂模式和策略模式，一旦你使用了其中某个类的方法，与其他类协同工作并不困难。</p>
+</li>
+<li><p><code>实用操作</code>：所有新的日期/时间 API 类都实现了一系列方法用以完成通用的任务，如：加、减、格式化、解析、从日期/时间中提取单独部分，等等。</p>
+</li>
+<li><p><code>可扩展性</code>：新的日期/时间 API 是工作在 ISO-8601 日历系统上的，但我们也可以将其应用在非 ISO 的日历上。 </p>
+</li>
+</ul>
+<h4 id="日期-时间-API-包解释"><a href="#日期-时间-API-包解释" class="headerlink" title="日期/时间 API 包解释"></a>日期/时间 API 包解释</h4><ul>
+<li><p><code>java.time 包</code>：这是新的 Java 日期/时间 API 的基础包，所有的主要基础类都是这个包的一部分，如：LocalDate, LocalTime, LocalDateTime, Instant, Period, Duration 等等。所有这些类都是不可变的和线程安全的，在绝大多数情况下，这些类能够有效地处理一些公共的需求。</p>
+</li>
+<li><p><code>java.time.chrono 包</code>：这个包为非 ISO 的日历系统定义了一些泛化的 API，我们可以扩展 AbstractChronology类来创建自己的日历系统。</p>
+</li>
+<li><p><code>java.time.format 包</code>：这个包包含能够格式化和解析日期时间对象的类，在绝大多数情况下，我们不应该直接使用它们，因为 java.time 包中相应的类已经提供了格式化和解析的方法。</p>
+</li>
+<li><p><code>java.time.temporal 包</code>：这个包包含一些时态对象，我们可以用其找出关于日期/时间对象的某个特定日期或时间，比如说，可以找到某月的第一天或最后一天。你可以非常容易地认出这些方法，因为它们都具有“withXXX”的格式。</p>
+</li>
+<li><p><code>java.time.zone 包</code>：这个包包含支持不同时区以及相关规则的类。</p>
+</li>
+</ul>
+<h4 id="这套新的API中的这五个类"><a href="#这套新的API中的这五个类" class="headerlink" title="这套新的API中的这五个类"></a>这套新的API中的这五个类</h4><ul>
+<li><p><strong>Instant</strong><br>它代表的是时间戳，比如2016-04-14T14:20:13.592Z，这可以从java.time.Clock类中获取，像这样： Instant current = Clock.system(ZoneId.of(“Asia/Tokyo”)).instant();</p>
+</li>
+<li><p><strong>LocalDate</strong><br>它表示的是不带时间的日期，比如2016-04-14。它可以用来存储生日，周年纪念日，入职日期等。</p>
+</li>
+<li><p><strong>LocalTime</strong><br>它表示的是不带日期的时间</p>
+</li>
+<li><p><strong>LocalDateTime</strong><br>它包含了时间与日期，不过没有带时区的偏移量</p>
+</li>
+<li><p><strong>ZonedDateTime</strong><br>这是一个带时区的完整时间，它根据UTC/格林威治时间来进行时区调整。这个库的主包是java.time，里面包含了代表日期，时间，瞬时以及持续时间的类。它有两个子package，一个是java.time.foramt，这个是什么用途就很明显了，还有一个是java.time.temporal，它能从更低层面对各个字段进行访问。时区指的是地球上共享同一标准时间的地区。每个时区都有一个唯一标识符，同时还有一个地区/城市(Asia/Tokyo)的格式以及从格林威治时间开始的一个偏移时间。比如说，东京的偏移时间就是+09:00。</p>
+</li>
+<li><p><strong>OffsetDateTime类</strong><br>实际上包含了LocalDateTime与ZoneOffset。它用来表示一个包含格林威治时间偏移量（+/-小时：分，比如+06:00或者 -08：00）的完整的日期（年月日）及时间（时分秒，纳秒）。</p>
+</li>
+<li><p><strong>DateTimeFormatter类</strong><br>用于在Java中进行日期的格式化与解析。与SimpleDateFormat不同，它是不可变且线程安全的，如果需要的话，可以赋值给一个静态变量。DateTimeFormatter类提供了许多预定义的格式器，你也可以自定义自己想要的格式。当然了，根据约定，它还有一个parse()方法是用于将字符串转换成日期的，如果转换期间出现任何错误，它会抛出DateTimeParseException异常。类似的，DateFormatter类也有一个用于格式化日期的format()方法，它出错的话则会抛出DateTimeException异常。</p>
+</li>
+<li><p><strong>再说一句。</strong><br>“MMM d yyyy”与“MMm dd yyyy”这两个日期格式也略有不同，前者能识别出”Jan 2 2014”与”Jan 14 2014”这两个串，而后者如果传进来的是”Jan 2 2014”则会报错，因为它期望月份处传进来的是两个字符。为了解决这个问题，在天为个位数的情况下，你得在前面补0，比如”Jan 2 2014”应该改为”Jan 02 2014”。</p>
+</li>
+</ul>
+<h4 id="java-time-包下的方法概览"><a href="#java-time-包下的方法概览" class="headerlink" title="java.time 包下的方法概览"></a>java.time 包下的方法概览</h4><table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Of</td>
+<td align="center">静态工厂方法</td>
+</tr>
+<tr>
+<td align="center">parse</td>
+<td align="center">静态工厂方法，关注于解析</td>
+</tr>
+<tr>
+<td align="center">get</td>
+<td align="center">获取某些东西的值</td>
+</tr>
+<tr>
+<td align="center">is</td>
+<td align="center">检查某些东西的是否是 true</td>
+</tr>
+<tr>
+<td align="center">with</td>
+<td align="center">不可变的 setter 等价物</td>
+</tr>
+<tr>
+<td align="center">plus</td>
+<td align="center">加一些量到某个对象</td>
+</tr>
+<tr>
+<td align="center">minus</td>
+<td align="center">从某个对象减去一些量</td>
+</tr>
+<tr>
+<td align="center">to</td>
+<td align="center">转换到另一个类型</td>
+</tr>
+<tr>
+<td align="center">at</td>
+<td align="center">把这个对象与另一个对象组合起来</td>
+</tr>
+</tbody></table>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th align="center">Java.time</th>
+<th align="center">java.util.Calendar 以及 Date</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">流畅的 API</td>
+<td align="center">不流畅的 API</td>
+</tr>
+<tr>
+<td align="center">实例不可变</td>
+<td align="center">实例可变</td>
+</tr>
+<tr>
+<td align="center">线程安全</td>
+<td align="center">非线程安全</td>
+</tr>
+</tbody></table>
+
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2021/10/04/IntelliJ%20Idea%E5%88%9B%E5%BB%BASpringBoot%E7%A4%BA%E4%BE%8B/">prev</a>
+    
+
+    
+    <p>last update time 2022-03-03</p>
+    
+    
+        <a class="extend next post-next" href="/2021/09/25/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4JAVA%E7%A8%8B%E5%BA%8F%E5%91%98%E5%88%B0%E4%BA%86%E5%BF%85%E9%A1%BB%E6%8E%8C%E6%8F%A1Spring-Boot%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%9F/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

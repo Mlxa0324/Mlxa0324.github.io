@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>var、let、const三者的区别 [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">var、let、const三者的区别</h1>
+<article class="post markdown-style">
+  <h1 id="1-块级作用域"><a href="#1-块级作用域" class="headerlink" title="1. 块级作用域 {}"></a>1. 块级作用域 {}</h1><p> ES5 中作用域有：全局作用域、函数作用域。没有块作用域的概念。</p>
+<p>ES6 中新增了块级作用域。块作用域由 { } 包括，if语句和 for语句里面的{ }也属于块作用域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">        <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 1</span></span><br><span class="line">    <span class="comment">// 通过var定义的变量可以跨块作用域访问到。</span></span><br><span class="line"> </span><br><span class="line">    (<span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> b = <span class="number">2</span>;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(b); <span class="comment">// 2</span></span><br><span class="line">    &#125;)();</span><br><span class="line">    <span class="comment">// console.log(b); // 报错，</span></span><br><span class="line">    <span class="comment">// 可见，通过var定义的变量不能跨函数作用域访问到</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> c = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(c); <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i ++) &#123;</span><br><span class="line">        <span class="keyword">var</span> d = <span class="number">5</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(i); <span class="comment">// 4   (循环结束i已经是4，所以此处i为4)</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(d); <span class="comment">// 5</span></span><br><span class="line">    <span class="comment">// if语句和for语句中用var定义的变量可以在外面访问到，</span></span><br><span class="line">    <span class="comment">// 可见，if语句和for语句属于块作用域，不属于函数作用域。</span></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-var、let、const的区别"><a href="#2-var、let、const的区别" class="headerlink" title="2. var、let、const的区别"></a>2. var、let、const的区别</h1><ol>
+<li>var定义的变量，没有块的概念，可以跨块访问, 不能跨函数访问。</li>
+<li>let定义的变量，只能在块作用域里访问，不能跨块访问，也不能跨函数访问。</li>
+<li>const用来定义常量，使用时必须初始化(即必须赋值)，只能在块作用域里访问，而且不能修改。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><br><span class="line"><span class="comment">// 块作用域</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">const</span> c = <span class="number">3</span>;</span><br><span class="line">        <span class="comment">// c = 4; // 报错</span></span><br><span class="line">        <span class="keyword">var</span> aa;</span><br><span class="line">        <span class="keyword">let</span> bb;</span><br><span class="line">        <span class="comment">// const cc; // 报错</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 1</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(b); <span class="comment">// 2</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(c); <span class="comment">// 3</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(aa); <span class="comment">// undefined</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(bb); <span class="comment">// undefined</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 1</span></span><br><span class="line">    <span class="comment">// console.log(b); // 报错</span></span><br><span class="line">    <span class="comment">// console.log(c); // 报错</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 函数作用域</span></span><br><span class="line">    (<span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> d = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">let</span> e = <span class="number">6</span>;</span><br><span class="line">        <span class="keyword">const</span> f = <span class="number">7</span>;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(d); <span class="comment">// 5</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(e); <span class="comment">// 6  </span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(f); <span class="comment">// 7 </span></span><br><span class="line"> </span><br><span class="line">    &#125;)();</span><br><span class="line">    <span class="comment">// console.log(d); // 报错</span></span><br><span class="line">    <span class="comment">// console.log(e); // 报错</span></span><br><span class="line">    <span class="comment">// console.log(f); // 报错</span></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/let">let 和 const 命令</a></p>
+</blockquote>
+
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2021/12/15/centos7%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E5%92%8C%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE/">prev</a>
+    
+
+    
+    <p>last update time 2022-03-03</p>
+    
+    
+        <a class="extend next post-next" href="/2021/12/01/Docker%E4%B8%8B%E5%AE%89%E8%A3%85MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%B6%E5%8C%BA%E4%B8%BAUTC%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

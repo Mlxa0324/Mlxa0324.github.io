@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>【题】MySQL数据库的一个例题（上） [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">【题】MySQL数据库的一个例题（上）</h1>
+<article class="post markdown-style">
+  <h3 id="创建数据库及其对应的表"><a href="#创建数据库及其对应的表" class="headerlink" title="创建数据库及其对应的表"></a>创建数据库及其对应的表</h3><p>表架构<br>学生表：（sid,sname,sage,ssex）<br>课程表：（cid,cname,tid）<br>分数表：（sid,cid,score）<br>教师表：（tid,tname）</p>
+<p><strong>学生表：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Student(</span><br><span class="line">    sid <span class="type">int</span>,</span><br><span class="line">    sname varcahr(<span class="number">10</span>),</span><br><span class="line">    sage <span class="type">int</span>,</span><br><span class="line">    ssex varcahr(<span class="number">10</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><strong>课程表：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Course(</span><br><span class="line">    cid <span class="type">int</span>,</span><br><span class="line">    cname varcahr(<span class="number">10</span>),</span><br><span class="line">    tid <span class="type">int</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><strong>分数表：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> SC(</span><br><span class="line">    sid <span class="type">int</span>,</span><br><span class="line">    cid <span class="type">int</span>,</span><br><span class="line">    score <span class="type">int</span></span><br><span class="line">); </span><br></pre></td></tr></table></figure>
+<p><strong>教师表：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Teacher(</span><br><span class="line">    tid <span class="type">int</span>,</span><br><span class="line">    tname varcahr(<span class="number">10</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="插入测试语句"><a href="#插入测试语句" class="headerlink" title="插入测试语句"></a>插入测试语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> Student <span class="keyword">select</span> <span class="number">1</span>,N<span class="string">&#x27;刘一&#x27;</span>,<span class="number">18</span>,N<span class="string">&#x27;男&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,N<span class="string">&#x27;钱二&#x27;</span>,<span class="number">19</span>,N<span class="string">&#x27;女&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,N<span class="string">&#x27;张三&#x27;</span>,<span class="number">17</span>,N<span class="string">&#x27;男&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">4</span>,N<span class="string">&#x27;李四&#x27;</span>,<span class="number">18</span>,N<span class="string">&#x27;女&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">5</span>,N<span class="string">&#x27;王五&#x27;</span>,<span class="number">17</span>,N<span class="string">&#x27;男&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">6</span>,N<span class="string">&#x27;赵六&#x27;</span>,<span class="number">19</span>,N<span class="string">&#x27;女&#x27;</span> </span><br><span class="line"> </span><br><span class="line"> <span class="keyword">insert</span> <span class="keyword">into</span> Teacher <span class="keyword">select</span> <span class="number">1</span>,N<span class="string">&#x27;叶平&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,N<span class="string">&#x27;贺高&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,N<span class="string">&#x27;杨艳&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">4</span>,N<span class="string">&#x27;周磊&#x27;</span></span><br><span class="line"> </span><br><span class="line"> <span class="keyword">insert</span> <span class="keyword">into</span> Course <span class="keyword">select</span> <span class="number">1</span>,N<span class="string">&#x27;语文&#x27;</span>,<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,N<span class="string">&#x27;数学&#x27;</span>,<span class="number">2</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,N<span class="string">&#x27;英语&#x27;</span>,<span class="number">3</span> <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"> <span class="keyword">select</span> <span class="number">4</span>,N<span class="string">&#x27;物理&#x27;</span>,<span class="number">4</span></span><br><span class="line"> </span><br><span class="line"> <span class="keyword">insert</span> <span class="keyword">into</span> SC </span><br><span class="line"> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">1</span>,<span class="number">56</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">78</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">3</span>,<span class="number">67</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">4</span>,<span class="number">58</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,<span class="number">1</span>,<span class="number">79</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,<span class="number">2</span>,<span class="number">81</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,<span class="number">3</span>,<span class="number">92</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">2</span>,<span class="number">4</span>,<span class="number">68</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,<span class="number">1</span>,<span class="number">91</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,<span class="number">2</span>,<span class="number">47</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,<span class="number">3</span>,<span class="number">88</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">3</span>,<span class="number">4</span>,<span class="number">56</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">4</span>,<span class="number">2</span>,<span class="number">88</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">4</span>,<span class="number">3</span>,<span class="number">90</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">4</span>,<span class="number">4</span>,<span class="number">93</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">5</span>,<span class="number">1</span>,<span class="number">46</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">5</span>,<span class="number">3</span>,<span class="number">78</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">5</span>,<span class="number">4</span>,<span class="number">53</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">6</span>,<span class="number">1</span>,<span class="number">35</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">6</span>,<span class="number">2</span>,<span class="number">68</span> <span class="keyword">union</span> <span class="keyword">all</span> </span><br><span class="line"> <span class="keyword">select</span> <span class="number">6</span>,<span class="number">4</span>,<span class="number">71</span></span><br></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>为了方便思考这里我把四张表信息帖在下面：</p>
+<p><strong>学生表：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">sid</th>
+<th align="center">sname</th>
+<th align="center">sage</th>
+<th align="left">ssex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">刘一</td>
+<td align="center">18</td>
+<td align="left">男</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">钱二</td>
+<td align="center">19</td>
+<td align="left">女</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">张三</td>
+<td align="center">17</td>
+<td align="left">男</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">李四</td>
+<td align="center">18</td>
+<td align="left">女</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">王五</td>
+<td align="center">17</td>
+<td align="left">男</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">赵六</td>
+<td align="center">19</td>
+<td align="left">女</td>
+</tr>
+</tbody></table>
+<p><strong>课程表：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">Cid</th>
+<th align="center">Cname</th>
+<th align="center">Tid</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">语文</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">数学</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">英语</td>
+<td align="center">3</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">物理</td>
+<td align="center">4</td>
+</tr>
+</tbody></table>
+<p><strong>分数表：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">Sid</th>
+<th align="center">Cid</th>
+<th align="center">score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">56</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">78</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">67</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">4</td>
+<td align="center">58</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">79</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">81</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">92</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">4</td>
+<td align="center">68</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">91</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">47</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">88</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">56</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">2</td>
+<td align="center">88</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">3</td>
+<td align="center">90</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">93</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">1</td>
+<td align="center">46</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">3</td>
+<td align="center">78</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">4</td>
+<td align="center">53</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">1</td>
+<td align="center">35</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">2</td>
+<td align="center">68</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">4</td>
+<td align="center">71</td>
+</tr>
+</tbody></table>
+<p><strong>教师表：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">Tid</th>
+<th align="center">Tname</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">叶平</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">贺高</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">杨艳</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">周磊</td>
+</tr>
+</tbody></table>
+<ol>
+<li>查询“001”课程比“002”课程成绩高的所有学生的学号；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.sid <span class="string">&#x27;学号&#x27;</span> <span class="keyword">FROM</span> </span><br><span class="line">    (<span class="keyword">SELECT</span> sid,score <span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> cid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span>) <span class="keyword">AS</span> a,</span><br><span class="line">    (<span class="keyword">SELECT</span> sid,score <span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span>) <span class="keyword">AS</span> b</span><br><span class="line">    <span class="keyword">WHERE</span> a.score <span class="operator">&gt;</span> b.score <span class="keyword">AND</span> a.sid <span class="operator">=</span> b.sid;</span><br></pre></td></tr></table></figure></li>
+<li>查询平均成绩大于60分的同学的学号和平均成绩；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sid <span class="string">&#x27;学号&#x27;</span>,<span class="built_in">avg</span>(score) <span class="string">&#x27;平均成绩&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> sid <span class="keyword">HAVING</span> <span class="built_in">avg</span>(score) <span class="operator">&gt;</span> <span class="number">60</span>;</span><br></pre></td></tr></table></figure></li>
+<li>查询所有同学的学号、姓名、选课数、总成绩；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student.sid <span class="string">&#x27;学号&#x27;</span>,student.sname <span class="string">&#x27;姓名&#x27;</span>,<span class="built_in">count</span>(sc.cid) <span class="string">&#x27;选课数&#x27;</span>,<span class="built_in">sum</span>(score) <span class="string">&#x27;总成绩&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sc <span class="keyword">ON</span> student.sid <span class="operator">=</span> sc.sid</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> student.sid,student.sname;</span><br></pre></td></tr></table></figure></li>
+<li>查询姓“李”的老师的个数；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">count</span>(<span class="keyword">DISTINCT</span>(tname)) <span class="string">&#x27;姓“李”的老师的个数&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> teacher</span><br><span class="line"><span class="keyword">WHERE</span> tname <span class="keyword">like</span> <span class="string">&#x27;李%&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
+<li>查询没学过“叶平”老师课的同学的学号、姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student.sid <span class="string">&#x27;学号&#x27;</span>,student.sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">NOT</span> <span class="keyword">IN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span>(sc.sid)</span><br><span class="line">    <span class="keyword">FROM</span> sc,teacher,course</span><br><span class="line">    <span class="keyword">WHERE</span> sc.Cid <span class="operator">=</span> course.Cid <span class="keyword">AND</span> teacher.Tid <span class="operator">=</span> course.Tid <span class="keyword">AND</span> teacher.Tname <span class="operator">=</span> <span class="string">&#x27;叶平&#x27;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li>查询学过“001”并且也学过编号“002”课程的同学的学号、姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student.sid <span class="string">&#x27;学号&#x27;</span>,student.sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student,sc</span><br><span class="line"><span class="keyword">WHERE</span> student.sid <span class="operator">=</span> sc.sid <span class="keyword">AND</span> sc.cid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> <span class="keyword">EXISTS</span>(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span> </span><br><span class="line">    <span class="keyword">FROM</span> sc <span class="keyword">AS</span> sc_2</span><br><span class="line">    <span class="keyword">WHERE</span> sc_2.sid <span class="operator">=</span> sc.sid <span class="keyword">AND</span> sc_2.cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>查询学过“叶平”老师所教的所有课的同学的学号、姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student.sid <span class="string">&#x27;学号&#x27;</span>, student.sname<span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">in</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> sid </span><br><span class="line">    <span class="keyword">FROM</span> sc,course,teacher</span><br><span class="line">    <span class="keyword">WHERE</span> sc.cid <span class="operator">=</span> course.cid <span class="keyword">AND</span> teacher.tid <span class="operator">=</span> course.tid <span class="keyword">AND</span>  teacher.tname <span class="operator">=</span> <span class="string">&#x27;叶平&#x27;</span></span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> sid <span class="keyword">HAVING</span> <span class="built_in">count</span>(sc.cid) <span class="operator">=</span> (</span><br><span class="line">        <span class="keyword">SELECT</span> <span class="built_in">count</span>(cid)</span><br><span class="line">        <span class="keyword">FROM</span> course,teacher</span><br><span class="line">        <span class="keyword">WHERE</span> course.tid <span class="operator">=</span> teacher.tid <span class="keyword">AND</span> tname <span class="operator">=</span> <span class="string">&#x27;叶平&#x27;</span></span><br><span class="line">    )</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>查询课程编号“002”的成绩比课程编号“001”课程低的所有同学的学号、姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sid <span class="string">&#x27;学号&#x27;</span>,sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> student.sid,student.sname,score,(</span><br><span class="line">        <span class="keyword">SELECT</span> score </span><br><span class="line">        <span class="keyword">FROM</span> sc <span class="keyword">AS</span> sc_2</span><br><span class="line">        <span class="keyword">WHERE</span> sc_2.sid <span class="operator">=</span> student.sid <span class="keyword">AND</span> sc_2.cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line">) score2</span><br><span class="line"><span class="keyword">FROM</span> student,sc</span><br><span class="line"><span class="keyword">WHERE</span> student.sid <span class="operator">=</span> sc.sid <span class="keyword">AND</span> cid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span></span><br><span class="line">) S_2</span><br><span class="line"><span class="keyword">WHERE</span> score2 <span class="operator">&lt;</span> score;</span><br></pre></td></tr></table></figure></li>
+<li>查询所有课程成绩小于60分的同学的学号、姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sid <span class="string">&#x27;学号&#x27;</span>, sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">IN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> s.sid</span><br><span class="line">    <span class="keyword">FROM</span> student <span class="keyword">AS</span> s,sc</span><br><span class="line">    <span class="keyword">WHERE</span> s.sid <span class="operator">=</span> sc.sid <span class="keyword">AND</span> sc.score <span class="operator">&lt;</span> <span class="number">60</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>查询没有学全所有课的同学的学号、姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student.sid <span class="string">&#x27;学号&#x27;</span>,student.sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student,sc</span><br><span class="line"><span class="keyword">WHERE</span> student.sid <span class="operator">=</span> sc.sid</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> student.sid,student.sname</span><br><span class="line"><span class="keyword">HAVING</span> <span class="built_in">count</span>(cid) <span class="operator">&lt;</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="built_in">count</span>(cid)</span><br><span class="line">    <span class="keyword">FROM</span> course</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>查询至少有一门课与学号为“1”的同学所学相同的同学的学号和姓名； <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> student.sid <span class="string">&#x27;学号&#x27;</span>,sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student,sc</span><br><span class="line"><span class="keyword">WHERE</span> student.sid <span class="operator">=</span> sc.sid <span class="keyword">AND</span> sc.cid <span class="keyword">IN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> cid</span><br><span class="line">    <span class="keyword">FROM</span> sc</span><br><span class="line">    <span class="keyword">WHERE</span> sid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>查询至少学过学号为“1”同学所有一门课的,其他同学学号和姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> student.sid <span class="string">&#x27;学号&#x27;</span>,sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> student,sc</span><br><span class="line"><span class="keyword">WHERE</span> student.sid <span class="operator">=</span> sc.sid <span class="keyword">AND</span> sc.cid <span class="keyword">IN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> cid </span><br><span class="line">    <span class="keyword">FROM</span> sc</span><br><span class="line">    <span class="keyword">WHERE</span> sc.sid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>把“SC”表中“叶平”老师教的课的成绩都更改为此课程的平均成绩；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> sc s <span class="keyword">JOIN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> cid,<span class="built_in">AVG</span>(score) score</span><br><span class="line">    <span class="keyword">FROM</span> sc </span><br><span class="line">    <span class="keyword">WHERE</span> cid <span class="keyword">IN</span> (</span><br><span class="line">            <span class="keyword">SELECT</span> c.cid</span><br><span class="line">            <span class="keyword">FROM</span> course c <span class="keyword">JOIN</span> teacher t <span class="keyword">ON</span> c.tid <span class="operator">=</span> t.tid</span><br><span class="line">            <span class="keyword">WHERE</span> t.TName<span class="operator">=</span><span class="string">&#x27;叶平&#x27;</span></span><br><span class="line">    ) <span class="keyword">GROUP</span> <span class="keyword">BY</span> cid</span><br><span class="line">) t <span class="keyword">ON</span> s.cid <span class="operator">=</span> t.cid <span class="keyword">SET</span> s.score <span class="operator">=</span> .score</span><br></pre></td></tr></table></figure></li>
+<li>查询和“2”号的同学学习的课程完全相同的其他同学学号和姓名；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  sid <span class="string">&#x27;学号&#x27;</span>,sname <span class="string">&#x27;姓名&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span>    student</span><br><span class="line"><span class="keyword">WHERE</span>   sid <span class="keyword">IN</span> ( </span><br><span class="line">    <span class="keyword">SELECT</span> sc.sid</span><br><span class="line">    <span class="keyword">FROM</span>   sc</span><br><span class="line">    <span class="keyword">JOIN</span> ( </span><br><span class="line">        <span class="keyword">SELECT</span>  <span class="operator">*</span></span><br><span class="line">        <span class="keyword">FROM</span>    sc</span><br><span class="line">        <span class="keyword">WHERE</span>   sid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line">    ) t <span class="keyword">ON</span> t.cid <span class="operator">=</span> SC.Cid</span><br><span class="line">        <span class="keyword">AND</span> t.sid <span class="operator">&lt;&gt;</span> sc.sid</span><br><span class="line">        <span class="keyword">GROUP</span> <span class="keyword">BY</span> sc.sid</span><br><span class="line">            <span class="keyword">HAVING</span> <span class="built_in">COUNT</span>(<span class="number">1</span>) <span class="operator">=</span> (</span><br><span class="line">                <span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">FROM</span>   sc</span><br><span class="line">                <span class="keyword">WHERE</span>  sid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line">        ) </span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+<li>删除学习“叶平”老师课的SC表记录； <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> sc</span><br><span class="line">    <span class="keyword">WHERE</span> cid <span class="keyword">IN</span> (</span><br><span class="line">        <span class="keyword">SELECT</span> cid</span><br><span class="line">        <span class="keyword">FROM</span> course c <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> teacher t <span class="keyword">ON</span> c.tid <span class="operator">=</span> t.tid </span><br><span class="line">        <span class="keyword">WHERE</span> tname <span class="operator">=</span> <span class="string">&#x27;叶平&#x27;</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure></li>
+<li>向SC表中插入一些记录，这些记录要求符合以下条件：没有上过编号“3”课程的同学学号、2号课的平均成绩；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> sc <span class="keyword">SELECT</span> sid,<span class="string">&#x27;3&#x27;</span>,(<span class="keyword">Select</span> <span class="built_in">avg</span>(score) </span><br><span class="line"><span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> cid<span class="operator">=</span><span class="string">&#x27;2&#x27;</span>) <span class="keyword">FROM</span> student <span class="keyword">where</span> sid <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> sid <span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> cid<span class="operator">=</span><span class="string">&#x27;3&#x27;</span>); </span><br></pre></td></tr></table></figure></li>
+<li>按平均成绩从高到低显示所有学生的“语文”、“数学”、“英语”三门的课程成绩<br>按如下形式显示： 学生ID,语文,数学,英语,有效课程数,有效平均分。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sid <span class="string">&#x27;学号&#x27;</span></span><br><span class="line">    ,(<span class="keyword">SELECT</span> score <span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> sc.sid <span class="operator">=</span> sc_2.sid <span class="keyword">AND</span> cid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span>) <span class="string">&#x27;语文&#x27;</span></span><br><span class="line">    ,(<span class="keyword">SELECT</span> score <span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> sc.sid <span class="operator">=</span> sc_2.sid <span class="keyword">AND</span> cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span>) <span class="string">&#x27;数学&#x27;</span></span><br><span class="line">    ,(<span class="keyword">SELECT</span> score <span class="keyword">FROM</span> sc <span class="keyword">WHERE</span> sc.sid <span class="operator">=</span> sc_2.sid <span class="keyword">AND</span> cid <span class="operator">=</span> <span class="string">&#x27;3&#x27;</span>) <span class="string">&#x27;英语&#x27;</span></span><br><span class="line">    ,<span class="built_in">count</span>(<span class="number">1</span>) <span class="string">&#x27;课程数&#x27;</span> , <span class="built_in">avg</span>(sc_2.score) <span class="string">&#x27;平均分&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> sc <span class="keyword">AS</span> sc_2</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> sid</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="built_in">avg</span>(sc_2.score) <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure></li>
+<li>查询各科成绩最高和最低的分：以如下形式显示：课程ID，最高分，最低分 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cid <span class="string">&#x27;课程号&#x27;</span>, <span class="built_in">max</span>(score) <span class="string">&#x27;最高分&#x27;</span>, <span class="built_in">min</span>(score) <span class="string">&#x27;最低分&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> sc </span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> cid;</span><br></pre></td></tr></table></figure></li>
+<li>按各科平均成绩从低到高和及格率的百分数从高到低顺序 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> t1.cid,</span><br><span class="line">       <span class="built_in">AVG</span>(t1.score) <span class="keyword">AS</span> avg_score,</span><br><span class="line">       <span class="number">100</span> <span class="operator">*</span> <span class="built_in">SUM</span>(</span><br><span class="line">                 <span class="keyword">CASE</span> </span><br><span class="line">                  <span class="keyword">WHEN</span> IFNULL(t1.score,<span class="number">0</span>)<span class="operator">&gt;=</span><span class="number">60</span> <span class="keyword">THEN</span> </span><br><span class="line">                    <span class="number">1</span> </span><br><span class="line">                  <span class="keyword">ELSE</span> </span><br><span class="line">                    <span class="number">0</span> </span><br><span class="line">                  <span class="keyword">END</span></span><br><span class="line">                )<span class="operator">/</span><span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> pass_pct</span><br><span class="line">    <span class="keyword">FROM</span> sc t1 </span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> t1.cid</span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span> avg_score <span class="keyword">ASC</span>,pass_pct <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure></li>
+<li>查询如下课程平均成绩和及格率的百分数(用”1行”显示): 语文（1），数学（2），英语 （3），物理（4）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">THEN</span> score <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> Cid <span class="keyword">WHEN</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 语文平均分</span><br><span class="line">        ,<span class="number">100</span> <span class="operator">*</span> <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> score <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 语文及格百分数 </span><br><span class="line">        ,<span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span> <span class="keyword">THEN</span> score <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> Cid <span class="keyword">WHEN</span> <span class="string">&#x27;2&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 数学平均分 </span><br><span class="line">        ,<span class="number">100</span> <span class="operator">*</span> <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span> <span class="keyword">AND</span> score <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;2&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 数学及格百分数 </span><br><span class="line">        ,<span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;3&#x27;</span> <span class="keyword">THEN</span> score <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> Cid <span class="keyword">WHEN</span> <span class="string">&#x27;3&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 英语平均分 </span><br><span class="line">        ,<span class="number">100</span> <span class="operator">*</span> <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;3&#x27;</span> <span class="keyword">AND</span> score <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;3&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 英语及格百分数 </span><br><span class="line">        ,<span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;4&#x27;</span> <span class="keyword">THEN</span> score <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> Cid <span class="keyword">WHEN</span> <span class="string">&#x27;4&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 物理平均分 </span><br><span class="line">        ,<span class="number">100</span> <span class="operator">*</span> <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;4&#x27;</span> <span class="keyword">AND</span> score <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)<span class="operator">/</span><span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> Cid <span class="operator">=</span> <span class="string">&#x27;4&#x27;</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> 物理及格百分数 </span><br><span class="line">  <span class="keyword">FROM</span> SC </span><br></pre></td></tr></table></figure></li>
+<li>查询不同老师所教不同课程平均分从高到低显示 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> t3.tname <span class="string">&#x27;教师姓名&#x27;</span></span><br><span class="line">        ,t2.cname <span class="keyword">AS</span> <span class="string">&#x27;课程名称&#x27;</span></span><br><span class="line">        ,<span class="built_in">AVG</span>(t1.score) <span class="keyword">AS</span> <span class="string">&#x27;平均成绩&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> sc t1</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> course t2</span><br><span class="line"><span class="keyword">ON</span> t1.cid <span class="operator">=</span> t2.cid</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> teacher t3</span><br><span class="line"><span class="keyword">ON</span> t2.tid <span class="operator">=</span> t3.tid</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> t3.tname,t2.cname</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 平均成绩 <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure></li>
+<li>查询如下课程成绩第 3 名到第 6 名的学生成绩单：<pre><code>语文（1），数学（2），英语 （3），物理（4） [学生ID],[学生姓名],语文,数学,英语,物理,平均成绩 
+</code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sub_query.cname,</span><br><span class="line">       sub_query.rank   </span><br><span class="line"><span class="keyword">FROM</span>(</span><br><span class="line">      <span class="keyword">SELECT</span> t2.cname,</span><br><span class="line">             t1.score,</span><br><span class="line">             <span class="built_in">rank</span>() <span class="keyword">over</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> t1.cid <span class="keyword">ORDER</span> <span class="keyword">BY</span> t1.score <span class="keyword">DESC</span>) <span class="keyword">AS</span> rank  </span><br><span class="line">      <span class="keyword">FROM</span> sc t1</span><br><span class="line">      <span class="keyword">INNER</span> <span class="keyword">JOIN</span> course t2</span><br><span class="line">        <span class="keyword">ON</span> t1.cid <span class="operator">=</span> t2.cid</span><br><span class="line">      <span class="keyword">WHERE</span> t1.cid <span class="keyword">IN</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">    ) sub_query</span><br><span class="line"><span class="keyword">WHERE</span> sub_query.rank <span class="keyword">BETWEEN</span> <span class="number">3</span> <span class="keyword">AND</span> <span class="number">6</span>; </span><br></pre></td></tr></table></figure></li>
+<li>统计列印各科成绩,各分数段人数:课程ID,课程名称,[100-85],[85-70],[70-60],[ &lt;60] <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> t1.cid <span class="keyword">AS</span> <span class="string">&#x27;课程ID&#x27;</span>,</span><br><span class="line">         t2.cname <span class="keyword">AS</span> <span class="string">&#x27;课程名称&#x27;</span>,</span><br><span class="line">         <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> t1.score <span class="operator">&gt;</span> <span class="number">85</span> <span class="keyword">AND</span> t1.score <span class="operator">&lt;=</span> <span class="number">100</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>) <span class="keyword">AS</span> <span class="string">&#x27;100-85&#x27;</span>,</span><br><span class="line">         <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> t1.score <span class="operator">&gt;</span> <span class="number">70</span> <span class="keyword">AND</span> t1.score <span class="operator">&lt;=</span> <span class="number">85</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)  <span class="keyword">AS</span> <span class="string">&#x27;85-70&#x27;</span>,</span><br><span class="line">         <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> t1.score <span class="operator">&gt;</span> <span class="number">60</span> <span class="keyword">AND</span> t1.score <span class="operator">&lt;=</span> <span class="number">70</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)  <span class="keyword">AS</span> <span class="string">&#x27;70-60&#x27;</span>,</span><br><span class="line">         <span class="built_in">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> t1.score <span class="operator">&lt;=</span> <span class="number">60</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)                    <span class="keyword">AS</span> <span class="string">&#x27; &lt;60&#x27;</span></span><br><span class="line"><span class="keyword">FROM</span> sc t1</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> course t2</span><br><span class="line">  <span class="keyword">ON</span> t1.cid <span class="operator">=</span> t2.cid</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> t1.cid,t2.cname</span><br></pre></td></tr></table></figure></li>
+<li>查询学生平均成绩及其名次<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> t1.sname,</span><br><span class="line">         t1.sid,</span><br><span class="line">         <span class="built_in">AVG</span>(t2.score) <span class="keyword">AS</span> avg_score</span><br><span class="line">        <span class="comment">-- dense_rank() over(ORDER BY AVG(t2.score) DESC) AS dense_rank</span></span><br><span class="line"><span class="keyword">FROM</span> student t1</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> sc t2</span><br><span class="line">  <span class="keyword">ON</span> t1.sid <span class="operator">=</span> t2.sid</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> t1.sname,t1.sid</span><br></pre></td></tr></table></figure></li>
+<li>查询各科成绩前三名的记录:(不考虑成绩并列情况) <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sub_query.cname,</span><br><span class="line">         sub_query.sid,</span><br><span class="line">         sub_query.sname,</span><br><span class="line">         sub_query.score</span><br><span class="line">         <span class="comment">-- sub_query.rank</span></span><br><span class="line"><span class="keyword">FROM</span> ( </span><br><span class="line">       <span class="keyword">SELECT</span> t3.cname,</span><br><span class="line">              t1.sid,</span><br><span class="line">              t1.sname,</span><br><span class="line">              t2.score,</span><br><span class="line">              <span class="comment">-- rank() over(PARTITION BY t2.cid ORDER BY t2.score DESC) AS rank</span></span><br><span class="line">       <span class="keyword">FROM</span> student t1</span><br><span class="line">       <span class="keyword">INNER</span> <span class="keyword">JOIN</span> sc t2</span><br><span class="line">         <span class="keyword">ON</span> t1.sid <span class="operator">=</span> t2.sid</span><br><span class="line">       <span class="keyword">INNER</span> <span class="keyword">JOIN</span> course t3</span><br><span class="line">         <span class="keyword">ON</span> t2.cid <span class="operator">=</span> t3.cid</span><br><span class="line">      ) sub_query</span><br><span class="line"><span class="keyword">WHERE</span> sub_query.rank <span class="operator">&lt;</span> <span class="number">4</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2022/01/17/%E3%80%90%E9%A2%98%E3%80%91MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E4%B8%AA%E4%BE%8B%E9%A2%98%EF%BC%88%E4%B8%8B%EF%BC%89/">prev</a>
+    
+
+    
+    <p>last update time 2022-03-03</p>
+    
+    
+        <a class="extend next post-next" href="/2021/12/25/MySQl%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E3%80%81%E8%A7%A6%E5%8F%91%E5%99%A8%E3%80%81%E8%A7%86%E5%9B%BE%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E6%80%BB%E7%BB%93/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

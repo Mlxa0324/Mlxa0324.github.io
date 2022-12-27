@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>MySQl存储过程、触发器、视图、自定义函数、索引总结 [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">MySQl存储过程、触发器、视图、自定义函数、索引总结</h1>
+<article class="post markdown-style">
+  <h1 id="MySQL存储过程与函数的区别"><a href="#MySQL存储过程与函数的区别" class="headerlink" title="MySQL存储过程与函数的区别"></a>MySQL存储过程与函数的区别</h1><h2 id="创建一个无参的存储过程"><a href="#创建一个无参的存储过程" class="headerlink" title="创建一个无参的存储过程"></a>创建一个无参的存储过程</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">delimiter<span class="operator">/</span><span class="operator">/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> showTime() <span class="operator">/</span><span class="operator">/</span>创建一个无参的存储过程</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">SELECT</span> NOW();</span><br><span class="line"><span class="keyword">END</span><span class="operator">/</span><span class="operator">/</span></span><br><span class="line">delimiter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CALL</span> showTime();</span><br></pre></td></tr></table></figure>
+<h2 id="创建一个只有IN参数的存储过程"><a href="#创建一个只有IN参数的存储过程" class="headerlink" title="创建一个只有IN参数的存储过程"></a>创建一个只有IN参数的存储过程</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">delimiter<span class="operator">/</span><span class="operator">/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> selectById(<span class="keyword">IN</span> uid <span class="type">SMALLINT</span> UNSIGNED)<span class="operator">/</span><span class="operator">/</span>创建一个只有<span class="keyword">IN</span>参数的存储过程</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> course <span class="keyword">WHERE</span> cid <span class="operator">=</span> uid;</span><br><span class="line"><span class="keyword">END</span><span class="operator">/</span><span class="operator">/</span></span><br><span class="line">delimiter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CALL</span> selectById(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="包含IN参数和OUT参数"><a href="#包含IN参数和OUT参数" class="headerlink" title="包含IN参数和OUT参数"></a>包含IN参数和OUT参数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">delimiter<span class="operator">/</span><span class="operator">/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> deleteById(<span class="keyword">IN</span> uid <span class="type">SMALLINT</span> ,<span class="keyword">OUT</span> num <span class="type">SMALLINT</span> UNSIGNED)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> course <span class="keyword">WHERE</span> Cid <span class="operator">=</span> uid;</span><br><span class="line"><span class="keyword">SELECT</span> ROW_COUNT() <span class="keyword">INTO</span> num;</span><br><span class="line"><span class="keyword">END</span><span class="operator">/</span><span class="operator">/</span></span><br><span class="line">delimiter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CALL</span> deleteById(<span class="number">2</span>,<span class="variable">@changeLine</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@changeLine</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看已有存储过程"><a href="#查看已有存储过程" class="headerlink" title="查看已有存储过程"></a>查看已有存储过程</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">PROCEDURE</span> STATUS;<span class="operator">/</span><span class="operator">/</span>查看已有存储过程</span><br></pre></td></tr></table></figure>
+<h2 id="存储过程与自定义函数的区别"><a href="#存储过程与自定义函数的区别" class="headerlink" title="存储过程与自定义函数的区别:"></a>存储过程与自定义函数的区别:</h2><p>1、’存储过程实现较为复杂，自定义函数针对性强’<br>2、’存储过程允许有多个返回值，而自定义函数只有一个返回值’<br>3、’存储过程一般独立的来执行，自定义函数是往往与其他SQL语句的一部分来使用’</p>
+<h2 id="存储过程的好处"><a href="#存储过程的好处" class="headerlink" title="存储过程的好处"></a>存储过程的好处</h2><p>‘存储过程就是把经常使用的SQL语句或业务逻辑封装起来，预编译保存在数据库中，<br>当需要的时候从数据库中直接调用，省去了编译过程，进而提高了运行速度。同时降低<br>网络数据的传输量’</p>
+<h2 id="查看存储过程创建的代码"><a href="#查看存储过程创建的代码" class="headerlink" title="查看存储过程创建的代码"></a>查看存储过程创建的代码</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> showTime; <span class="operator">/</span><span class="operator">/</span> 查看存储过程创建的代码</span><br></pre></td></tr></table></figure>
+<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="string">&#x27;deleteById&#x27;</span> <span class="keyword">FROM</span> mysql.proc <span class="keyword">WHERE</span> db <span class="operator">=</span> <span class="string">&#x27;test&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;type&#x27;</span> <span class="operator">=</span> <span class="string">&#x27;PROCEDURE&#x27;</span>;<span class="operator">/</span><span class="operator">/</span>存储过程</span><br></pre></td></tr></table></figure>
+<h1 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h1><h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE]</span><br><span class="line">   [ALGORITHM <span class="operator">=</span> &#123;<span class="keyword">MERGE</span>  <span class="operator">|</span> TEMPTABLE <span class="operator">|</span> UNDEFINED&#125;]</span><br><span class="line"><span class="keyword">VIEW</span>  [db_name.]view_name[(column_list)</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line">[<span class="keyword">SELECT</span>  statement]</span><br></pre></td></tr></table></figure>
+<h2 id="语法介绍"><a href="#语法介绍" class="headerlink" title="语法介绍"></a>语法介绍</h2><p><code>[or replace]</code>：若给定了[or replace]，则表示当已具有同名的视图时，将覆盖原视图。</p>
+<p><code>[SELECT  statement]</code>：select_statement是一个查询语句，这个查询语句可从表或其它的视图中查询。视图属于数据库，因此需要指定数据库的名称，若未指定时，表示在当前的数据库创建新视图。</p>
+<p><code>ALGORITHM</code>：算法属性允许您控制MySQL在创建视图时使用的机制，MySQL提供了三种算法：<code>MERGE</code>，<code>TEMPTABLE</code>和<code>UNDEFINED</code>。</p>
+<ul>
+<li><p>使用<strong>MEGRE</strong>算法，MySQL首先将输入查询与定义视图中的<strong>SELECT语句</strong>组合成单个查询，然后MySQL执行组合查询并返回结果集。如果SELECT语句包含集合函数（如：MIN | MAX | SUM | COUNT | AVG 等）或DiSTINCT、GROUP BY、HAVING、LIMIT、UNION、UNION ALL、子查询，则不允许使用<strong>MEGRE</strong></p>
+</li>
+<li><p>使用<strong>TEMPTABLE</strong>算法，MySQL首先根据定义视图的SELECT语句创建一个临时表，然后针对该临时表执行输入查询。因为MySQL必须创建临时表来存储结果集并将数据从基表移动到临时表，所以TEMPTABLE算法要比MEGRE算法效率要低。另外TEMPTABLE算法的视图是<code>不可更新</code>的。</p>
+</li>
+<li><p>当创建视图而不指定显示算法时，<strong>UNDEFUNED</strong>是默认算法。<strong>UNDEFINED</strong>算法使MySQL可以选择使用<code>MEGRE</code>或<code>TEMPTABLE</code>算法。MySQL优先使用<code>MEGRE</code>算法。</p>
+</li>
+</ul>
+<h2 id="查看名称"><a href="#查看名称" class="headerlink" title="查看名称"></a>查看名称</h2><p>在数据库中，视图和表共享相同的命名空间，因此视图和表不能具有相同的名称。 另外，视图的名称必须遵循表的命名规则。</p>
+<h2 id="创建-修改示例"><a href="#创建-修改示例" class="headerlink" title="创建/修改示例"></a>创建/修改示例</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> test_detail  <span class="keyword">AS</span> </span><br><span class="line"><span class="keyword">SELECT</span>  </span><br><span class="line">    student.sid <span class="keyword">AS</span> sid,</span><br><span class="line">    student.Sname <span class="keyword">AS</span> sName,</span><br><span class="line">    sc.score <span class="keyword">AS</span> score</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    student s,sc sc</span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line">    s.Sid <span class="operator">=</span> sc.Sid;</span><br><span class="line"></span><br><span class="line"><span class="comment">-----------修改视图----------------</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">VIEW</span> test_detail <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    s.Sid <span class="keyword">AS</span> sid,</span><br><span class="line">    sc.score <span class="keyword">AS</span> score</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    student s,sc sc</span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line">    s.Sid <span class="operator">=</span> sc.Sid;</span><br></pre></td></tr></table></figure>
+<h3 id="查看视图命令"><a href="#查看视图命令" class="headerlink" title="查看视图命令"></a>查看视图命令</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">FULL</span> TABLES; <span class="operator">/</span><span class="operator">/</span>查看视图命令</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test_detail; <span class="operator">/</span><span class="operator">/</span>使用视图</span><br></pre></td></tr></table></figure>
+<h2 id="创建视图注意事项"><a href="#创建视图注意事项" class="headerlink" title="创建视图注意事项"></a>创建视图注意事项</h2><p>1）运行创建视图的语句需要用户具有创建视图（create view）的权限，若加了[OR REPLACEREPLACE]时，还需要用户具有删除视图（drop view）的权限。</p>
+<p>2）select 语句不能包含from子句中的子查询</p>
+<p>3）select 语句不能引用系统或用户变量</p>
+<p>4）select 语句不能引用预处理语句参数</p>
+<p>5）在存储子程序内，定义不能引用子程序参数或局部变量</p>
+<p>6）在定义中引用的表或视图必须存在。但是，创建了MySQL视图后，能够舍弃定义引用的表或视图。要<br>想检查视图定义是否存在这类问题，可使用check table语句；</p>
+<p>7）在定义中不能引用temporary表，不能创建temporary视图；</p>
+<p>8）在视图定义中命名的表必须已存在；</p>
+<p>9）不能讲触发程序与视图关联在一起；</p>
+<p>10）在视图定义中允许使用order by,但是，如果从特定视图进行了选择，而该视图使用了具有自己order by语句，它将被忽略。</p>
+<hr>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/stephenykk/p/4584528.html">视图</a></p>
+</blockquote>
+<h1 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h1><h2 id="创建触发器"><a href="#创建触发器" class="headerlink" title="创建触发器"></a>创建触发器</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trigger_name</span><br><span class="line">trigger_time</span><br><span class="line">trigger_event <span class="keyword">ON</span> tbl_name</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">trigger_stmt</span><br></pre></td></tr></table></figure>
+<p><strong>trigger_name</strong>：标识触发器名称，用户自行指定；<br><strong>trigger_time</strong>：标识触发时机，取值为<code>BEFORE</code>或<code>AFTER</code>；<br><strong>trigger_event</strong>：标识触发事件，取值为INSERT、UPDATE、DELETE；<br><strong>tbl_name</strong>：标识建立触发器的表名，即在哪张表上建立触发器；<br><strong>trigger_stmt</strong>：触发器程序体，可以是一句SQL语句，或者BEGIN或END包含的多条语句。  </p>
+<p>由此可见，可以建立6种触发器，即：</p>
+<p>BEFORE INSERT、BEFORE UPDATE、BEFORE DELETE、</p>
+<p>AFTER INSERT、AFTER UPDATE、AFTER DELETE。</p>
+<p>另外有一个限制是不能同时在一个表上建立2个相同类型的触发器，因此在一个表上最多建立6个触发器。</p>
+<hr>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/CraryPrimitiveMan/p/4206942.html">触发器</a></p>
+</blockquote>
+<h3 id="查看触发器"><a href="#查看触发器" class="headerlink" title="查看触发器"></a>查看触发器</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> TRIGGERS;<span class="operator">/</span><span class="operator">/</span>查看触发器</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.triggers;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.triggers <span class="keyword">WHERE</span> trigger_name<span class="operator">=</span><span class="string">&#x27;tri_test&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [IF <span class="keyword">EXISTS</span>] [schema_name.]trigger_name</span><br></pre></td></tr></table></figure>
+<h2 id="触发器的执行顺序"><a href="#触发器的执行顺序" class="headerlink" title="触发器的执行顺序"></a>触发器的执行顺序</h2><p>我们建立的数据库一般都是 InnoDB 数据库，其上建立的表是事务性表，也就是事务安全的。这时，若SQL语句或触发器执行失败，MySQL 会回滚事务，有：</p>
+<p>①如果 BEFORE 触发器执行失败，SQL 无法正确执行。<br>②SQL 执行失败时，AFTER 型触发器不会触发。<br>③AFTER 类型的触发器执行失败，SQL 会回滚。  </p>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1>
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2022/01/13/%E3%80%90%E9%A2%98%E3%80%91MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E4%B8%AA%E4%BE%8B%E9%A2%98%EF%BC%88%E4%B8%8A%EF%BC%89/">prev</a>
+    
+
+    
+    <p>last update time 2022-03-03</p>
+    
+    
+        <a class="extend next post-next" href="/2021/12/18/Html5%E4%B8%AD%E7%9A%84LocalStorage/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>

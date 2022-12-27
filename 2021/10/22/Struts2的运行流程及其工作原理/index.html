@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <title>Struts2的运行流程及其工作原理 [ 云息未来 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/iLiKE.css">
+    
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script id="leancloud">
+      AV.init({
+          appId: "6E5zTbTljdUbVW2WkXPsXGJk-gzGzoHsz",
+          appKey: "0vsyDKfNpeSECAI70J794ugv"
+      });
+    </script>
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+<body>
+    <div class="header">
+        <div class="container">
+    <div class="menu">
+      <div class="menu-left">
+        <a href="/">
+          <img src="/fly.png"></img>
+        </a>
+      </div>
+      <div class="menu-right">
+        
+          
+          
+          
+          
+          
+          
+          <a href="/">Home</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/archives">Archives</a>
+        
+          
+          
+          
+          
+          
+          
+          <a href="/about">About</a>
+        
+      </div>
+    </div>
+</div>
+    </div>
+    <div class="container">
+        <h1 class="post-title">Struts2的运行流程及其工作原理</h1>
+<article class="post markdown-style">
+  <h1 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h1><p>Struts2的官方文档附带了Struts2的架构图。从这张图可以很好的去理解Struts2</p>
+<p><img src="http://image.immertry.top/20181022%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="架构图"></p>
+<p>关于图中的Key：</p>
+<ul>
+<li><p><code>Servlet Filters：</code>过滤器链，客户端的所有请求都要经过Filter链的处理。</p>
+</li>
+<li><p><code>Struts Core：</code>Struts2的核心部分，但是Struts2已经帮我们做好了，我们不需要去做这个</p>
+</li>
+<li><p><code>Interceptors：</code>Struts2的拦截器。Struts2提供了很多默认的拦截器，可以完成日常开发的绝大部分工作；而我们自定义的拦截器，用来实现实际的客户业务需要的功能。</p>
+</li>
+<li><p><code>User Created：</code>由开发人员创建的，包括struts.xml、Action、Template，这些是每个使用Struts2来进行开发的人员都必须会的。</p>
+</li>
+</ul>
+<ul>
+<li><p><code>1.FilterDispatcher</code>是整个Struts2的调度中心，也就是MVC中的C（控制中心），根据ActionMapper的结果来决定是否处理请求，如果ActionMapper指出该URL应该被Struts2处理，那么它将会执行Action处理，并停止过滤器链上还没有执行的过滤器。</p>
+</li>
+<li><p><code>2.ActionMapper </code>会判断这个请求是否应该被Struts2处理，如果需要Struts2处理，ActionMapper会返回一个对象来描述请求对应的ActionInvocation的信息。</p>
+</li>
+<li><p><code>3.ActionProxy</code>它会创建一个ActionInvocation实例，位于Action和xwork之间，使得我们在将来有机会引入更多的实现方式，比如通过WebService来实现等。</p>
+</li>
+<li><p><code>4.ConfigurationManager</code>是xwork配置的管理中心，可以把它看做struts.xml这个配置文件在内存中的对应。</p>
+</li>
+<li><p><code>5.struts.xml</code>是开发人员必须光顾的地方。是Stuts2的应用配置文件，负责诸如URL与Action之间映射关系的配置、以及执行后页面跳转的Result配置等。</p>
+</li>
+<li><p><code>6.ActionInvocation：</code>真正调用并执行Action，它拥有一个Action实例和这个Action所依赖的拦截器实例。ActionInvocation会按照指定的顺序去执行这些拦截器、Action以及相应的Result。<br>Interceptor(拦截器)：是Struts2的基石，类似于JavaWeb的Filter，拦截器是一些无状态的类，拦截器可以自动拦截Action，它们给开发者提供了在Action运行之前或Result运行之后来执行一些功能代码的机会。</p>
+</li>
+<li><p><code>7.Action：</code>用来处理请求，封装数据。</p>
+</li>
+</ul>
+<h1 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h1><ol>
+<li><p>当用户的发出请求，比如http:localhost:8080/Struts2/helloworld/helloworldAction.action,请求会被Tomcat接收到，Tomcat服务器来选择处理这个请求的Web应用，那就是由helloworld这个web工程来处理这个请求。</p>
+</li>
+<li><p>Web容器会去读取helloworld这个工程的web.xml，在web.xml中进行匹配，但发现，由struts2这个过滤器来进行处理（也就是<br>StrutsPrepareAndExecuteFilter），根据Filter的配置，找到FilterDispatcher（Struts2的调度中心)</p>
+</li>
+<li><p><code>然后会获取FilterDispatcher实例，然后回调doFilter方法，进行真正的处理</code><br>PS：FilterDispatcher是任何一个Struts2应用都需要配置的，通常情况下，web.xml文件中还有其他过滤器时，FilterDispatcher是放在滤器链的最后；如果在FilterDispatcher前出现了如SiteMesh这种特殊的过滤器，还必须在SiteMesh前引用Struts2的ActionContextCleanUp过滤器</p>
+</li>
+</ol>
+<p>对应Struts2的架构图如下</p>
+<p><img src="http://image.immertry.top/201810221.png" alt="对应架构图"></p>
+<ol start="4">
+<li><code>这时FilterDispatcher会将请求转发给ActionMapper。ActionMapper负责识别当前的请求是否需要Struts2做出处理。ActionMapper就类似于公司的保安，来识别是不是当前客户是不是我公司的人</code></li>
+</ol>
+<p>对应Struts2的架构图如下</p>
+<p><img src="http://image.immertry.top/201810222.png"></p>
+<ol start="5">
+<li><code>如果需要Struts2处理，ActionMapper会通知FilterDispatcher，需要处理这个请求，FilterDispatcher会停止过滤器链以后的部分，（这也就是为什么，FilterDispatcher应该出现在过滤器链的最后的原因）。然后建立一个ActionProxy实例，这个对象作为Action与xwork之间的中间层，会代理Action的运行过程。</code></li>
+</ol>
+<p>对应Struts2的架构图如下</p>
+<p><img src="http://image.immertry.top/201810223.png"></p>
+<ol start="6">
+<li><code>ActionProxy对象在被创建出来的时候，并不知道要运行哪个Action，它手里只有从FilterDispatcher中拿到的请求的URL。</code><br>而真正知道要运行哪个Action的是ConfigurationManager。因为只有它才能读取我们的strtus.xml</li>
+</ol>
+<p>（在服务器启动的时候，ConfigurationManager就会把struts.xml中的所有信息读到内存里，并缓存，当ActionProxy带着URL向他询问要运行哪个Action的时候，就可以直接匹配、查找并回答了）</p>
+<p>对应Struts2的架构图如下</p>
+<p><img src="http://image.immertry.top/2018102212.png"> <img src="http://image.immertry.top/201810224.png"></p>
+<ol start="7">
+<li><code>ActionProxy知道自己该干什么事之后（运行哪个Action、相关的拦截器以及所有可能使用的result信息），然后马上建立ActionInvocation对象了，ActionInvocation对象描述了Action运行的整个过程。</code><br>注意：Action完整的调用过程都是由ActionInvocation对象负责</li>
+</ol>
+<p>对应Struts2的架构图如下</p>
+<p><img src="http://image.immertry.top/201810225.png"></p>
+<ol start="8">
+<li><code>在execute方法之前，好像URL请求中的参数已经赋值到了Action的属性上，这就是我们的&quot;雷锋&quot;—拦截器。</code></li>
+</ol>
+<p>拦截器的运行被分成两部分，一部分在Action之前运行，一部分在Result之后运行，而且顺序是刚好反过来的。也就是在Action执行前的顺序，比如是拦截器1、拦截器2、拦截器3，那么运行Result之后，再次运行拦截器的时候，顺序就变成拦截器3、拦截器2、拦截器1了。  </p>
+<p>这就好比，你要去奶奶家，需要通过 水泊梁山-&gt;盘丝洞 -&gt; 索马里，到了奶奶家，看奶奶回来的时候，就必须要通过 索马里 -&gt; 盘丝洞 -&gt; 水泊梁山。</p>
+<p>所以ActionInvocation对象执行的时候需要通过很多复杂的过程，按照指定拦截器的顺序依次执行</p>
+<p>对应Struts2的架构图如下</p>
+<p><img src="http://image.immertry.top/201810226.png"></p>
+<ol start="9">
+<li><code>到了奶奶家，然后执行Action的execute方法</code></li>
+</ol>
+<p><img src="http://image.immertry.top/201810227.png"></p>
+<ol start="10">
+<li><code>然后根据execute方法返回的结果（Result），去struts.xml中匹配选择下一个页面</code></li>
+</ol>
+<p><img src="http://image.immertry.top/201810228.png"></p>
+<ol start="11">
+<li><p><code>根据结果(Result)找到页面后，在页面上(有很多Struts2提供的模板)，可以通过Struts2自带的标签库来访问需要的数据，并生成最终页面</code></p>
+<p>注意：这时还没有给客户端应答，只是生成了页面</p>
+</li>
+</ol>
+<p><img src="http://image.immertry.top/201810229.png"></p>
+<ol start="12">
+<li><code>最后，ActionInvocation对象倒序执行拦截器,从奶奶家回来</code></li>
+</ol>
+<p><img src="http://image.immertry.top/2018102210.png"></p>
+<ol start="13">
+<li><code>ActionInvocation对象执行完毕后，已经得到响应对象（HttpServletResponse）了，最后按与过滤器（Filter）配置定义相反的顺序依次经过过滤器，向客户端展示出响应的结果</code></li>
+</ol>
+<p>得到完整Struts2架构图</p>
+<p><img src="http://image.immertry.top/20181022%E6%9E%B6%E6%9E%84%E5%9B%BE.png"></p>
+<hr>
+<blockquote>
+<p>原文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wjw0130/article/details/46371847">https://blog.csdn.net/wjw0130/article/details/46371847</a> </p>
+</blockquote>
+
+</article>
+
+    <div class="pagenator post-pagenator">
+    
+    
+        <a class="extend prev post-prev" href="/2021/10/23/Mybaits%E4%B9%8B%E5%8A%A8%E6%80%81SQL/">prev</a>
+    
+
+    
+    <p>last update time 2022-03-03</p>
+    
+    
+        <a class="extend next post-next" href="/2021/10/21/Restful-%E5%BA%94%E7%94%A8%E5%88%86%E6%9E%90/">next</a>
+    
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="container">
+    <div class="social">
+	<ul class="social-list">
+		
+			
+				
+				
+				<li>
+					<a href="mailto:immertry@163.com" title="email" target="_blank">
+					<i class="fa fa-email"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://github.com/ImmerTry" title="github" target="_self">
+					<i class="fa fa-github"></i>
+					</a>
+				</li>
+			
+		
+			
+				
+				<li>
+					<a href="https://weibo.com/u/5092233560?display=0&amp;retcode=6102" title="weibo" target="_self">
+					<i class="fa fa-weibo"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+				
+				<li>
+					<a href="https://www.zhihu.com/people/liu-lei-62-41" title="zhihu" target="_self">
+					<i class="fa fa-zhihu"></i>
+					</a>
+				</li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+	</ul>
+</div>
+    <div class="copyright">
+        <span>
+            
+            
+            
+                © 云息未来 2021 - 2022
+            
+        </span>
+    </div>
+    <div class="power">
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/CaiChenghan/iLiKE">iLiKE Theme</a>
+        </span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--page counter part-->
+<script>
+function addCount (Counter) {
+    url=$('.article-date').attr('href').trim();
+    title = $('.article-title').text().trim();
+    var query = new AV.Query(Counter);
+    //use url as unique idnetfication
+    query.equalTo("url",url);
+    query.find({
+        success: function(results) {
+            if (results.length>0) {
+                var counter=results[0];
+                counter.fetchWhenSave(true); //get recent result
+                counter.increment("time");
+                counter.save();
+            } else {
+                var newcounter=new Counter();
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+                newcounter.save(null,{
+                    success: function(newcounter) {
+                        //alert('New object created');
+                    }, error: function(newcounter,error) {
+                        alert('Failed to create');
+                    }
+                })
+            }
+        },
+        error: function(error) {
+            //find null is not a error
+            alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+$(function() {
+    var Counter=AV.Object.extend("Counter");
+    //only increse visit counting when intering a page
+    if ($('.article-title').length == 1) {
+       addCount(Counter);
+    }
+    var query=new AV.Query(Counter);
+    query.descending("time");
+    // the sum of popular posts
+    query.limit(10); 
+    query.find({
+        success: function(results) {
+                for(var i=0;i<results.length;i++) {
+                    var counter=results[i];
+                    title=counter.get("title");
+                    url=counter.get("url");
+                    time=counter.get("time");
+                    // add to the popularlist widget
+                    showcontent=title+" ("+time+")";
+                    //notice the "" in href
+                    $('.popularlist').append('<li><a href="'+url+'">'+showcontent+'</a></li>');
+                }
+            },
+        error: function(error) {
+            alert("Error:"+error.code+" "+error.message);
+        }
+    });
+});
+</script>
+</div>
+    </div>
+</body>
+</html>
